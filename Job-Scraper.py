@@ -54,4 +54,4 @@ for page in range(1, user_input):  # test first 5 pages
 with open("uk_care_jobs.json", "w", encoding="utf-8") as f:
     json.dump(all_jobs, f, indent=2, ensure_ascii=False)
 
-print(f"[✔] Saved {len(all_jobs)} jobs")
+print(f"[x] Saved {len(all_jobs)} jobs")
