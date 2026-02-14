@@ -58,7 +58,7 @@ for page in range(1, user_input + 1):  # include last page
         "app_id": APP_ID.strip(),
         "app_key": APP_KEY.strip(),
         "what": "care",
-        "results_per_page": 20
+        "results_per_page": 40
     }
 
     response = requests.get(url, params=params, headers=headers)
