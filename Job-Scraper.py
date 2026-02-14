@@ -22,7 +22,34 @@ user_input = int(input("Enter How Many Pages: "))
 
 all_jobs = []
 
-for page in range(1, user_input + 1): 
+RECRUITMENT_KEYWORDS = [
+    "consultant",
+    "recruitment",
+    "recruiter",
+    "staffing",
+    "agency",
+    "talent",
+    "resourcing",
+    "solutions",
+    "employment",
+    "workforce",
+    "personnel",
+    "hiring",
+    "search ltd",
+    "careers ltd",
+    "temp",
+    "temporary",
+]
+
+def is_recruitment(company_name, description):
+    text = f"{company_name} {description}".lower()
+    for word in RECRUITMENT_KEYWORDS:
+        if word in text:
+            return True
+    return False
+
+
+for page in range(1, user_input + 1):  # include last page
     print(f"[>] Fetching page {page}")
 
     url = f"https://api.adzuna.com/v1/api/jobs/gb/search/{page}"
@@ -60,18 +87,23 @@ for page in range(1, user_input + 1):
         if salary_max:
             salary_max = f"£{salary_max:,}"
 
+        company_name = job.get("company", {}).get("display_name", "")
+        description = job.get("description", "")
+
+        if is_recruitment(company_name, description):
+            continue
+
         all_jobs.append({
-            "title": job.get("title"),
-            "company": job.get("company", {}).get("display_name"),
-            "location": job.get("location", {}).get("display_name"),
-            "salary_min": salary_min,
-            "salary_max": salary_max,
-            "phone_number": phone,
-            "redirect_url": job.get("redirect_url")
-        })
+        "title": job.get("title"),
+        "company": company_name,
+        "location": job.get("location", {}).get("display_name"),
+        "salary_min": salary_min,
+        "salary_max": salary_max,
+        "phone_number": phone,
+        "redirect_url": job.get("redirect_url")
+    })
 
-
-    time.sleep(0.5)
+        time.sleep(0.5)
 
 with open("uk_care_jobs.json", "w", encoding="utf-8") as f:
     json.dump(all_jobs, f, indent=2, ensure_ascii=False)
