@@ -22,7 +22,7 @@ user_input = int(input("Enter How Many Pages: "))
 
 all_jobs = []
 
-for page in range(1, user_input + 1):  # include last page
+for page in range(1, user_input + 1): 
     print(f"[>] Fetching page {page}")
 
     url = f"https://api.adzuna.com/v1/api/jobs/gb/search/{page}"
