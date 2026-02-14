@@ -1,19 +1,28 @@
 import requests
 import json
 import time
+import re
 
 APP_ID = "644761c2"
-APP_KEY = "4e4149cfe2beee79d8557f57c5744cc9"
+APP_KEY = "fff1d2d67aba26807b7e53334e7486eb"
 
 headers = {
     "Accept": "application/json"
 }
 
+def extract_phone(text):
+    if not text:
+        return None
+
+    pattern = r'(\+44\s?7\d{3}|\(?07\d{3}\)?|\+44\s?1\d{3}|\(?01\d{3}\)?)\s?\d{3}\s?\d{3}'
+    match = re.search(pattern, text)
+    return match.group(0) if match else None
+
 user_input = int(input("Enter How Many Pages: "))
 
 all_jobs = []
 
-for page in range(1, user_input):  # test first 5 pages
+for page in range(1, user_input + 1):  # include last page
     print(f"[>] Fetching page {page}")
 
     url = f"https://api.adzuna.com/v1/api/jobs/gb/search/{page}"
@@ -40,14 +49,27 @@ for page in range(1, user_input):  # test first 5 pages
         break
 
     for job in data["results"]:
+        description = job.get("description")
+        phone = extract_phone(description)
+
+        salary_min = job.get("salary_min")
+        salary_max = job.get("salary_max")
+
+        if salary_min:
+            salary_min = f"£{salary_min:,}"
+        if salary_max:
+            salary_max = f"£{salary_max:,}"
+
         all_jobs.append({
             "title": job.get("title"),
             "company": job.get("company", {}).get("display_name"),
             "location": job.get("location", {}).get("display_name"),
-            "salary_min": job.get("salary_min"),
-            "salary_max": job.get("salary_max"),
+            "salary_min": salary_min,
+            "salary_max": salary_max,
+            "phone_number": phone,
             "redirect_url": job.get("redirect_url")
         })
+
 
     time.sleep(0.5)
 
