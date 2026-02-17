@@ -2,19 +2,6 @@
 
 ---
 
-## Features
-
-- UK only endpoint  
-- Care sector filtering  
-- Recruitment agency removal  
-- Company level deduplication  
-- Automatic pagination  
-- Retry + exponential backoff  
-- Graceful shutdown (`Ctrl + C` saves progress)  
-- Clean JSON output  
-
----
-
 ## Output Format
 
 The script generates:
@@ -64,7 +51,7 @@ Run the scraper:
 python scrape.py
 ```
 
-To safely stop the script:
+stop the script:
 
 ```
 Ctrl + C
@@ -78,7 +65,7 @@ uk_care_jobs.json
 
 ---
 
-## PowerShell Analysis Commands
+## PowerShell Commands
 
 ### View Companies With Multiple Job Listings
 
