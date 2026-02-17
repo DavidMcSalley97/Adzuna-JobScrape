@@ -48,7 +48,7 @@ pip3 install requests
 Run the scraper:
 
 ```bash
-python scrape.py
+python Job-Scraper.py
 ```
 
 stop the script:
